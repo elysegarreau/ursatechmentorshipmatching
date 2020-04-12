@@ -21,6 +21,7 @@ class Mentee:
         self.interest = interest
         self.importance = importance
         #self.menteesList = dict(zip(email, first, last, phoneNum, prof_interests, hobbies, goal, location, major, job, personality, intro_extra, paired, meetings, block_exp, tech_exp, interest, importance))
+        # ^^second option
 
         def output_menteesList():
             menteesList = {}
