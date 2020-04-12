@@ -21,7 +21,8 @@ class Mentor:
         self.interest = interest
         self.importance = importance
         #self.mentorsList = dict(zip(email, first, last, phoneNum, prof_interests, hobbies, goal, location, major, job, personality, intro_extra, paired, meetings, block_exp, tech_exp, interest, importance))
-
+        #^^ second option
+        
         def output_mentorsList():
             mentorsList = {}
             with open('samplementor.csv') as mentor_file:
