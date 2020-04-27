@@ -17,8 +17,7 @@ def matchScore(menteeList, mentorList):
 
 
             #chunk 2: location (max 20)
-            if mentee.location == mentor.location:
-                score += 20
+            score += 25 * (1 / 2 ** math.abs((mentee.utc - mentor.utc)))
 
             #chunk 3: occupation/major (max 25)
             if mentee.major == mentor.major:
@@ -71,8 +70,7 @@ def matchScore(menteeList, mentorList):
 
 
             #chunk 2: location (max 20)
-            if mentee.location == mentor.location:
-                score += 20
+            score += 25 * (1 / 2 ** math.abs((mentee.utc - mentor.utc)))
 
             #chunk 3: occupation/major (max 25)
             if mentee.major == mentor.major:
