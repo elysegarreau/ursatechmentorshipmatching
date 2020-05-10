@@ -1,75 +1,251 @@
 import csv
+import pandas as pd
+
+
+#MENTEES
 
 class Mentee:
-    def __init__(self, email, first, last, phoneNum, prof_interests, hobbies, goal, location, major, job, personality, intro_extra, paired, meetings, block_exp, tech_exp, interest, importance):
-        self.email = email
+    
+    def __init__(self, first, last, phone, email, major, second_major, job, prof_interests, hobbies, meet, utc, mbti, ie, ie_pairing, bitcoin, ethereum, defi, crypto, governance, privacy, usability, scalability, research, design, development, product, investment, community, trading, legal, marketing, entrepreneurship, skills, goals, why_blockchain, blockchain_importance):
         self.first = first
         self.last = last
-        self.phoneNum = phoneNum
+        self.phone = phone
+        self.email = email
+        self.major = major
+        self.second_major = second_major
+        self.job =job
         self.prof_interests = prof_interests
         self.hobbies = hobbies
-        self.goal = goal
-        self.location = location
-        self.major = major
-        self.job = job
-        self.personality = personality
-        self.intro_extra = intro_extra
-        self.paired = paired
-        self.meetings = meetings
-        self.block_exp = block_exp
-        self.tech_exp = tech_exp
-        self.interest = interest
-        self.importance = importance
-        #self.menteesList = dict(zip(email, first, last, phoneNum, prof_interests, hobbies, goal, location, major, job, personality, intro_extra, paired, meetings, block_exp, tech_exp, interest, importance))
-        # ^^second option
+        self.meet = meet
+        self.utc = utc
+        self.mbti = mbti
+        self.ie = ie
+        self.ie_pairing = ie_pairing
+        self.bitcoin = bitcoin
+        self.ethereum = ethereum 
+        self.defi = defi
+        self.crypto = crypto
+        self.governance = governance 
+        self.privacy = privacy
+        self.usability = usability
+        self.scalability = scalability
+        self.research = research 
+        self.design = design
+        self.development = development
+        self.product = product
+        self.investment = investment 
+        self.community = community
+        self.trading = trading
+        self.legal = legal
+        self.marketing = marketing
+        self.entrepreneurship = entrepreneurship
+        self.skills = skills
+        self.goals = goals
+        self.why_blockchain = why_blockchain
+        self.blockchain_importance = blockchain_importance
+        self.scores = {}
+        self.preferences = []
+        
 
-        def output_menteesList():
-            menteesList = {}
-            with open('samplementee.csv') as mentee_file:
-                reader = csv.reader(mentee_file, delimiter=',')
-                writer = csv.writer(mentee_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-                for row in reader:
-                    writer.writerow(row)
-                #mentees_data = list(reader)
-                #mentees_instances = [Mentee(i, mentees_data[0]) for i in mentees_data[1:]]
-                for email, first, last, phoneNum, prof_interests, hobbies, goal, location, major, job, personality, intro_extra, paired, meetings, block_exp, tech_exp, interest, importance in reader:
-                    menteesList.append(Mentee(email, first, last, phoneNum, prof_interests, hobbies, goal, location, major, job, personality, intro_extra, paired, meetings, block_exp, tech_exp, interest, importance)
-            return menteesList
+#Columns of Mentee DataFrame
+mentee_columns = ["first", "last", "phone", "email", "major", "job", "prof_interests", "hobbies", "meet","utc","mbti", "ie", "ie_pairing", "bitcoin", "ethereum", "defi", "crypto", "governance", "privacy", "usability", "scalability", "research", "design", "development", "product", "investment", "community", "trading", "legal", "marketing", "entrepreneurship", "skills", "goals", "why_blockchain", "blockchain_importance", "second_major"]
+
+mentorskill_mapping = {"Very unfamiliar": 0, "Somewhat familiar": 1, "Familiar with amateur experience": 2, "Experience from past projects/academia": 3, "Professional or industry-level experience": 4}
+
+menteeskill_mapping = {"Unfamiliar": 0, "Somewhat familiar": 1, "Familiar with amateur experience": 2, "Prior experience from classes/projects": 3, "Professional or industry-level experience": 4}
+
+#INPUT: Raw Data from application
+#OUTPUT: Updated DataFrame
+def output_dataframe(path, columns, num=0):
+    df = pd.read_csv(path)
+    df = df.drop(columns="Timestamp")
+    df.columns = columns
+    
+    #If num = 1 then mentee
+    if num == 1:
+        df["bitcoin"] = df["bitcoin"].map(menteeskill_mapping)
+        df["ethereum"] = df["ethereum"].map(menteeskill_mapping)
+        df["defi"] = df["defi"].map(menteeskill_mapping)
+        df["crypto"] = df["crypto"].map(menteeskill_mapping)
+        df["governance"] = df["governance"].map(menteeskill_mapping)
+        df["privacy"] = df["privacy"].map(menteeskill_mapping)
+        df["usability"] = df["usability"].map(menteeskill_mapping)
+        df["scalability"] = df["scalability"].map(menteeskill_mapping)
+        df["research"] = df["research"].map(menteeskill_mapping)
+        df["development"] = df["development"].map(menteeskill_mapping)
+        df["product"] = df["product"].map(menteeskill_mapping)
+        df["investment"] = df["investment"].map(menteeskill_mapping)
+        df["community"] = df["community"].map(menteeskill_mapping)
+        df["trading"] = df["trading"].map(menteeskill_mapping)
+        df["legal"] = df["legal"].map(menteeskill_mapping)
+        df["marketing"] = df["marketing"].map(menteeskill_mapping)
+        df["entrepreneurship"] = df["entrepreneurship"].map(menteeskill_mapping)
+    #If num = 0 then mentor
+    else: 
+        df["bitcoin"] = df["bitcoin"].map(mentorskill_mapping)
+        df["ethereum"] = df["ethereum"].map(mentorskill_mapping)
+        df["defi"] = df["defi"].map(mentorskill_mapping)
+        df["crypto"] = df["crypto"].map(mentorskill_mapping)
+        df["governance"] = df["governance"].map(mentorskill_mapping)
+        df["privacy"] = df["privacy"].map(mentorskill_mapping)
+        df["usability"] = df["usability"].map(mentorskill_mapping)
+        df["scalability"] = df["scalability"].map(mentorskill_mapping)
+        df["research"] = df["research"].map(mentorskill_mapping)
+        df["development"] = df["development"].map(mentorskill_mapping)
+        df["product"] = df["product"].map(mentorskill_mapping)
+        df["investment"] = df["investment"].map(mentorskill_mapping)
+        df["community"] = df["community"].map(mentorskill_mapping)
+        df["trading"] = df["trading"].map(mentorskill_mapping)
+        df["legal"] = df["legal"].map(mentorskill_mapping)
+        df["marketing"] = df["marketing"].map(mentorskill_mapping)
+        df["entrepreneurship"] = df["entrepreneurship"].map(mentorskill_mapping)
+        
+    return df
+        
+#INPUT: Cleaned DataFrame with information on Mentees
+#OUTPUT: Dictionary with mapping from IDs (positive integers) to Mentee objects.
+def output_mentees(mentee_df):
+    menteesList = {}
+    num_mentees = mentee_df.shape[0]
+
+    for row in range(num_mentees):
+        current = mentee_df.iloc[row]
+
+        first = current.loc["first"]
+        last = current.loc["last"]
+        phone = current.loc["phone"]
+        email = first = current.loc["email"]
+        major = current.loc["major"]
+        second_major = current.loc["second_major"]
+        job = current.loc["job"]
+        prof_interests = current.loc["prof_interests"].split(',')
+        hobbies = current.loc["hobbies"].split(',')
+        meet = current.loc["meet"]
+        utc = current.loc["utc"]
+        mbti = current.loc["mbti"]
+        ie = current.loc["ie"]
+        ie_pairing = current.loc["ie_pairing"]
+        bitcoin = current.loc["bitcoin"]
+        ethereum = current.loc["ethereum"]
+        defi = current.loc["defi"]
+        crypto = current.loc["crypto"]
+        governance = current.loc["governance"]
+        privacy = current.loc["privacy"]
+        usability = current.loc["usability"]
+        scalability = current.loc["scalability"]
+        research = current.loc["research"]
+        design = current.loc["design"]
+        development = current.loc["development"]
+        product = current.loc["product"]
+        investment = current.loc["investment"]
+        community = current.loc["community"]
+        trading = current.loc["trading"]
+        legal = current.loc["legal"]
+        marketing = current.loc["marketing"]
+        entrepreneurship = current.loc["entrepreneurship"]
+        skills = current.loc["skills"].split(',')
+        goals = current.loc["goals"]
+        why_blockchain = current.loc["why_blockchain"]
+        blockchain_importance = current.loc["blockchain_importance"]
+
+        menteesList[row+1] = Mentee(first, last, phone, email, major, second_major, job, prof_interests, hobbies, meet, utc, mbti, ie, ie_pairing, bitcoin, ethereum, defi, crypto, governance, privacy, usability, scalability, research, design, development, product, investment, community, trading, legal, marketing, entrepreneurship, skills, goals, why_blockchain, blockchain_importance)
+    return menteesList
 
 
+#### MENTORS
 
 class Mentor:
-    def __init__(self, email, first, last, phoneNum, prof_interests, hobbies, goal, location, major, job, personality, intro_extra, paired, meetings, block_exp, tech_exp, interest, importance):
-        self.email = email
+    
+    def __init__(self, first, last, phone, email, major, second_major, job, prof_interests, hobbies, meet, utc, mbti, ie, ie_pairing, bitcoin, ethereum, defi, crypto, governance, privacy, usability, scalability, research, design, development, product, investment, community, trading, legal, marketing, entrepreneurship, skills, goals, why_blockchain, blockchain_importance):
         self.first = first
         self.last = last
-        self.phoneNum = phoneNum
+        self.phone = phone
+        self.email = email
+        self.major = major
+        self.second_major = second_major
+        self.job =job
         self.prof_interests = prof_interests
         self.hobbies = hobbies
-        self.goal = goal
-        self.location = location
-        self.major = major
-        self.job = job
-        self.personality = personality
-        self.intro_extra = intro_extra
-        self.paired = paired
-        self.meetings = meetings
-        self.block_exp = block_exp
-        self.tech_exp = tech_exp
-        self.interest = interest
-        self.importance = importance
-        #self.mentorsList = dict(zip(email, first, last, phoneNum, prof_interests, hobbies, goal, location, major, job, personality, intro_extra, paired, meetings, block_exp, tech_exp, interest, importance))
-        #^^ second option
+        self.meet = meet
+        self.utc = utc
+        self.mbti = mbti
+        self.ie = ie
+        self.ie_pairing = ie_pairing
+        self.bitcoin = bitcoin
+        self.ethereum = ethereum 
+        self.defi = defi
+        self.crypto = crypto
+        self.governance = governance 
+        self.privacy = privacy
+        self.usability = usability
+        self.scalability = scalability
+        self.research = research 
+        self.design = design
+        self.development = development
+        self.product = product
+        self.investment = investment 
+        self.community = community
+        self.trading = trading
+        self.legal = legal
+        self.marketing = marketing
+        self.entrepreneurship = entrepreneurship
+        self.skills = skills
+        self.goals = goals
+        self.why_blockchain = why_blockchain
+        self.blockchain_importance = blockchain_importance
+        self.scores = {}
+        self.preferences = []
         
-        def output_mentorsList():
-            mentorsList = {}
-            with open('samplementor.csv') as mentor_file:
-                reader = csv.reader(mentor_file, delimiter=',')
-                writer = csv.writer(mentor_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-                for row in reader:
-                    writer.writerow(row)
-                #mentors_data = list(reader)
-                #mentors_instances = [Mentee(i, mentees_data[0]) for i in mentees_data[1:]]
-                for email, first, last, phoneNum, prof_interests, hobbies, goal, location, major, job, personality, intro_extra, paired, meetings, block_exp, tech_exp, interest, importance in reader:
-                    mentorsList.append(Mentor(email, first, last, phoneNum, prof_interests, hobbies, goal, location, major, job, personality, intro_extra, paired, meetings, block_exp, tech_exp, interest, importance)
-            return mentorsList
+
+#Columns of Mentor DataFrame
+mentor_columns = ["first", "last", "phone", "email", "major","second_major", "job", "prof_interests", "hobbies", "meet","utc","mbti", "ie", "ie_pairing", "bitcoin", "ethereum", "defi", "crypto", "governance", "privacy", "usability", "scalability", "research", "design", "development", "product", "investment", "community", "trading", "legal", "marketing", "entrepreneurship", "skills", "goals", "why_blockchain", "blockchain_importance"]
+        
+#INPUT: Cleaned DataFrame with information on Mentors
+#OUTPUT: Dictionary with mapping from IDs (negative integers) to Mentor objects.
+def output_mentors(mentor_df):
+    mentorsList = {}
+    num_mentors = mentor_df.shape[0]
+
+    for row in range(num_mentors):
+        current = mentor_df.iloc[row]
+
+        first = current.loc["first"]
+        last = current.loc["last"]
+        phone = current.loc["phone"]
+        email = first = current.loc["email"]
+        major = current.loc["major"]
+        second_major = current.loc["second_major"]
+        job = current.loc["job"]
+        prof_interests = current.loc["prof_interests"].split(',')
+        hobbies = current.loc["hobbies"].split(',')
+        meet = current.loc["meet"]
+        utc = current.loc["utc"]
+        mbti = current.loc["mbti"]
+        ie = current.loc["ie"]
+        ie_pairing = current.loc["ie_pairing"]
+        bitcoin = current.loc["bitcoin"]
+        ethereum = current.loc["ethereum"]
+        defi = current.loc["defi"]
+        crypto = current.loc["crypto"]
+        governance = current.loc["governance"]
+        privacy = current.loc["privacy"]
+        usability = current.loc["usability"]
+        scalability = current.loc["scalability"]
+        research = current.loc["research"]
+        design = current.loc["design"]
+        development = current.loc["development"]
+        product = current.loc["product"]
+        investment = current.loc["investment"]
+        community = current.loc["community"]
+        trading = current.loc["trading"]
+        legal = current.loc["legal"]
+        marketing = current.loc["marketing"]
+        entrepreneurship = current.loc["entrepreneurship"]
+        skills = current.loc["skills"].split(',')
+        goals = current.loc["goals"]
+        why_blockchain = current.loc["why_blockchain"]
+        blockchain_importance = current.loc["blockchain_importance"]
+
+        mentorsList[-1*(row+1)] = Mentor(first, last, phone, email, major, second_major, job, prof_interests, hobbies, meet, utc, mbti, ie, ie_pairing, bitcoin, ethereum, defi, crypto, governance, privacy, usability, scalability, research, design, development, product, investment, community, trading, legal, marketing, entrepreneurship, skills, goals, why_blockchain, blockchain_importance)
+    return mentorsList
+
