@@ -100,6 +100,8 @@ def output_dataframe(path, columns, num=0):
         df["marketing"] = df["marketing"].map(mentorskill_mapping)
         df["entrepreneurship"] = df["entrepreneurship"].map(mentorskill_mapping)
         
+    df["utc"] = df["utc"].map(timezones)
+        
     return df
         
 #INPUT: Cleaned DataFrame with information on Mentees
@@ -112,9 +114,10 @@ def output_mentees(mentee_df):
         current = mentee_df.iloc[row]
 
         first = current.loc["first"]
+        #print(current.loc["first"])
         last = current.loc["last"]
         phone = current.loc["phone"]
-        email = first = current.loc["email"]
+        email = current.loc["email"]
         major = current.loc["major"]
         second_major = current.loc["second_major"]
         job = current.loc["job"]
@@ -199,6 +202,38 @@ class Mentor:
 
 #Columns of Mentor DataFrame
 mentor_columns = ["first", "last", "phone", "email", "major","second_major", "job", "prof_interests", "hobbies", "meet","utc","mbti", "ie", "ie_pairing", "bitcoin", "ethereum", "defi", "crypto", "governance", "privacy", "usability", "scalability", "research", "design", "development", "product", "investment", "community", "trading", "legal", "marketing", "entrepreneurship", "skills", "goals", "why_blockchain", "blockchain_importance"]
+
+timezones = {"GMT (Greenwich Mean Time)":0,
+             "ECT (European Central Time)":1, 
+             "EET (Eastern European Time)":2, 
+             "ART (Egypt Standard Time)":2, 
+             "EAT (Eastern African Time)":3, 
+             "MET (Middle East Time)":3, 
+             "NET (Near East Time)":4, 
+             "PLT (Pakistan Lahore Time)":5, 
+             "IST (India Standard Time)":5.5, 
+             "BST (Bangladesh Standard Time)":6, 
+             "VST (Vietnam Standard Time)":7, 
+             "CTT (China Taiwan Time)":8, 
+             "JST (Japan Standard Time)":9, 
+             "ACT (Australia Central Time)":9.5, 
+             "AET (Australia Eastern Time)":10, 
+             "SST (Solomon Standard Time)":11, 
+             "NST (New Zealand Standard Time)":12, 
+             "MIT (Midway Islands Time)":-11, 
+             "HST (Hawaii Standard Time)":-10, 
+             "AST (Alaska Standard Time)":-9, 
+             "PST (Pacific Standard Time)":-8, 
+             "PNT (Phoenix Standard Time)":-7, 
+             "MST (Mountain Standard Time)":-7, 
+             "CST (Central Standard Time)":-6, 
+             "EST (Eastern Standard Time)":-5, 
+             "IET (Indiana Eastern Standard Time)": -5, 
+             "PRT (Puerto Rico and US Virgin Islands Time)":-4, 
+             "CNT (Canada Newfoundland Time)":-3, 
+             "AGT (Argentina Standard Time":-3, 
+             "BET (Brazil Eastern Time)":-3, 
+             "CAT (Central African Time)":-1}
         
 #INPUT: Cleaned DataFrame with information on Mentors
 #OUTPUT: Dictionary with mapping from IDs (negative integers) to Mentor objects.
@@ -212,7 +247,7 @@ def output_mentors(mentor_df):
         first = current.loc["first"]
         last = current.loc["last"]
         phone = current.loc["phone"]
-        email = first = current.loc["email"]
+        email = current.loc["email"]
         major = current.loc["major"]
         second_major = current.loc["second_major"]
         job = current.loc["job"]
@@ -248,4 +283,47 @@ def output_mentors(mentor_df):
 
         mentorsList[-1*(row+1)] = Mentor(first, last, phone, email, major, second_major, job, prof_interests, hobbies, meet, utc, mbti, ie, ie_pairing, bitcoin, ethereum, defi, crypto, governance, privacy, usability, scalability, research, design, development, product, investment, community, trading, legal, marketing, entrepreneurship, skills, goals, why_blockchain, blockchain_importance)
     return mentorsList
+
+def output_final(proposals, mentors, mentees):
+    proposalkeys = proposals.keys()
+    rowslist = []
+
+    #mentee or mentor List = {id: Object}
+
+    for i in proposalkeys:
+        menteeindex = i
+        curr_mentee = mentees.get(menteeindex)
+
+        menteeFirst = curr_mentee.first
+        menteeLast = curr_mentee.last
+        menteeEmail = curr_mentee.email
+        menteePhone = curr_mentee.phone
+        menteeGoals = curr_mentee.goals
+        menteeWhy = curr_mentee.why_blockchain
+        menteeImportance = curr_mentee.blockchain_importance
+
+        mentorindex = proposals.get(i)
+        curr_mentor = mentors.get(mentorindex)
+
+        mentorFirst = curr_mentor.first
+        mentorLast = curr_mentor.last
+        mentorEmail = curr_mentor.email
+        mentorPhone = curr_mentor.phone
+        mentorGoals = curr_mentor.goals
+        mentorWhy = curr_mentor.why_blockchain
+        mentorImportance = curr_mentor.blockchain_importance
+    
+        columnsList = {"Mentee First":menteeFirst, "Mentee Last":menteeLast, "Mentee Email":menteeEmail,
+                   "Mentee Phone": menteePhone, "(Mentee) What are your main goals for this mentorship program?":menteeGoals, 
+                   "(Mentee) Why are you interested in blockchain?": menteeWhy,
+                   "(Mentee) Why do you think blockchain is important?":menteeImportance,
+                   "Mentor First":mentorFirst, "Mentor Last":mentorLast, 
+                   "Mentor Email":mentorEmail, "Mentor Phone":mentorPhone, "(Mentor) What are your main goals for this mentorship program?": mentorGoals, 
+                  "(Mentor) Why are you interested in blockchain?": mentorWhy, 
+                   "(Mentor) Why do you think blockchain is important?":mentorImportance}
+    
+        rowslist += [columnsList]
+
+    final = pd.DataFrame(rowslist)
+    display(final)
 
