@@ -291,27 +291,44 @@ def output_final(proposals, mentors, mentees):
     #mentee or mentor List = {id: Object}
 
     for i in proposalkeys:
-        menteeindex = i
-        curr_mentee = mentees.get(menteeindex)
+        mentorindex = i
+        mentorFirst = "Unpaired"
+        mentorFirst = "Unpaired"
+        mentorLast = "Unpaired"
+        mentorEmail = "Unpaired"
+        mentorPhone = "Unpaired"
+        mentorGoals = "Unpaired"
+        mentorWhy = "Unpaired"
+        mentorImportance = "Unpaired"
+        
+        if mentorindex in mentors:
+            curr_mentor = mentors.get(mentorindex)
+            mentorFirst = curr_mentor.first
+            mentorLast = curr_mentor.last
+            mentorEmail = curr_mentor.email
+            mentorPhone = curr_mentor.phone
+            mentorGoals = curr_mentor.goals
+            mentorWhy = curr_mentor.why_blockchain
+            mentorImportance = curr_mentor.blockchain_importance
 
-        menteeFirst = curr_mentee.first
-        menteeLast = curr_mentee.last
-        menteeEmail = curr_mentee.email
-        menteePhone = curr_mentee.phone
-        menteeGoals = curr_mentee.goals
-        menteeWhy = curr_mentee.why_blockchain
-        menteeImportance = curr_mentee.blockchain_importance
-
-        mentorindex = proposals.get(i)
-        curr_mentor = mentors.get(mentorindex)
-
-        mentorFirst = curr_mentor.first
-        mentorLast = curr_mentor.last
-        mentorEmail = curr_mentor.email
-        mentorPhone = curr_mentor.phone
-        mentorGoals = curr_mentor.goals
-        mentorWhy = curr_mentor.why_blockchain
-        mentorImportance = curr_mentor.blockchain_importance
+        menteeindex = proposals.get(i)
+        menteeFirst = "Unpaired"
+        menteeLast = "Unpaired"
+        menteeEmail = "Unpaired"
+        menteePhone = "Unpaired"
+        menteeGoals = "Unpaired"
+        menteeWhy = "Unpaired"
+        menteeImportance = "Unpaired"
+        
+        if menteeindex in mentees:
+            curr_mentee = mentees.get(menteeindex)
+            menteeFirst = curr_mentee.first
+            menteeLast = curr_mentee.last
+            menteeEmail = curr_mentee.email
+            menteePhone = curr_mentee.phone
+            menteeGoals = curr_mentee.goals
+            menteeWhy = curr_mentee.why_blockchain
+            menteeImportance = curr_mentee.blockchain_importance
     
         columnsList = {"Mentee First":menteeFirst, "Mentee Last":menteeLast, "Mentee Email":menteeEmail,
                    "Mentee Phone": menteePhone, "(Mentee) What are your main goals for this mentorship program?":menteeGoals, 
@@ -326,4 +343,3 @@ def output_final(proposals, mentors, mentees):
 
     final = pd.DataFrame(rowslist)
     display(final)
-

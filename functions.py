@@ -66,7 +66,7 @@ def matchScore(menteeList, mentorList):
 
                 score += pow(2, (menteeTime - mentorTime)) * 6
             
-            
+            score += mentee_skills(mentee, mentor)
             
             mentee.scores[mentor_id] = score
 
@@ -133,9 +133,131 @@ def matchScore(menteeList, mentorList):
                     mentorTime = 1
 
                 score += pow(2, (mentorTime - menteeTime)) * 6
-
+            
+            
+                
             mentor.scores[mentee_id] = score
 
+def mentee_skills(mentee, mentor):
+    score = 0
+    if "Bitcoin" in mentee.skills:
+        score += mentor.bitcoin
+    if "Ethereum" in mentee.skills:
+        score += mentor.ethereum
+    if "DeFi" in mentee.skills:
+        score += mentor.defi
+    if "Cryptography" in mentee.skills:
+        score += mentor.cryptography
+    if "Governance" in mentee.skills:
+        score += mentor.governance
+    if "Privacy" in mentee.skills:
+        score += mentor.privacy
+    if "Usability" in mentee.skills:
+        score += mentor.usability
+    if "Scalability" in mentee.skills:
+        score += mentor.scalability
+    if "Research" in mentee.skills:
+        score += mentor.research
+    if "Design" in mentee.skills:
+        score += mentor.design
+    if "Development" in mentee.skills:
+        score += mentor.development
+    if "Product" in mentee.skills:
+        score += mentor.product
+    if "Investment" in mentee.skills:
+        score += mentor.investment
+    if "Community" in mentee.skills:
+        score += mentor.community
+    if "Trading" in mentee.skills:
+        score += mentor.trading
+    if "Legal" in mentee.skills:
+        score += mentor.legal
+    if "Marketing" in mentee.skills:
+        score += mentor.marketing
+    if "Entrepreneurship" in mentee.skills:
+        score += mentor.entrepreneurship
+    return score
+    
+def mentor_skills(mentee, mentor):
+    score = 0
+    if mentor.skills == "Experience":
+        if mentor.bitcoin >= 3:
+            score += (mentee.bitcoin >= 3)*4
+        if mentor.ethereum >= 3:
+            score += (mentee.ethereum >= 3)*4
+        if mentor.defi >= 3:
+            score += (mentee.defi >= 3)*4
+        if mentor.cryptography >= 3:
+            score += (mentee.cryptography >= 3)*4
+        if mentor.governance >= 3:
+            score += (mentee.governance >= 3)*4
+        if mentor.privacy >= 3:
+            score += (mentee.privacy >= 3)*4
+        if mentor.usability >= 3:
+            score += (mentee.usability >= 3)*4
+        if mentor.scalability >= 3:
+            score += (mentee.scalability >= 3)*4
+        if mentor.research >= 3:
+            score += (mentee.research >= 3)*4
+        if mentor.design >= 3:
+            score += (mentee.design >= 3)*4
+        if mentor.development >= 3:
+            score += (mentee.development >= 3)*4
+        if mentor.product >= 3:
+            score += (mentee.product >= 3)*4
+        if mentor.investment >= 3:
+            score += (mentee.investment >= 3)*4
+        if mentor.community >= 3:
+            score += (mentee.community >= 3)*4
+        if mentor.trading >= 3:
+            score += (mentee.trading >= 3)*4
+        if mentor.legal >= 3:
+            score += (mentee.legal >= 3)*4
+        if mentor.marketing >= 3:
+            score += (mentee.marketing >= 3)*4
+        if mentor.entrepreneurship >= 3:
+            score += (mentee.entrepreneurship >= 3)*4
+                    
+    if mentor.skills == "Familiarity or demonstrated interest":
+        if mentor.bitcoin >= 3:
+            score += (mentee.bitcoin >= 1)*2
+        if mentor.ethereum >= 3:
+             score += (mentee.ethereum >= 1)*2
+        if mentor.defi >= 3:
+             score += (mentee.defi >= 1)*2
+        if mentor.cryptography >= 3:
+             score += (mentee.cryptography >= 1)*2
+        if mentor.governance >= 3:
+             score += (mentee.governance >= 1)*2
+        if mentor.privacy >= 3:
+             score += (mentee.privacy >= 1)*2
+        if mentor.usability >= 3:
+             score += (mentee.usability >= 1)*2
+        if mentor.scalability >= 3:
+             score += (mentee.scalability >= 1)*2
+        if mentor.research >= 3:
+            score += (mentee.research >= 1)*2
+        if mentor.design >= 3:
+            score += (mentee.design >= 1)*2
+        if mentor.development >= 3:
+            score += (mentee.development >= 1)*2
+        if mentor.product >= 3:
+            score += (mentee.product >= 1)*2
+        if mentor.investment >= 3:
+            score += (mentee.investment >= 1)*2
+        if mentor.community >= 3:
+            score += (mentee.community >= 1)*2
+        if mentor.trading >= 3:
+            score += (mentee.trading >= 1)*2
+        if mentor.legal >= 3:
+            score += (mentee.legal >= 1)*2
+        if mentor.marketing >= 3:
+            score += (mentee.marketing >= 1)*2
+        if mentor.entrepreneurship >= 3:
+            score += (mentee.entrepreneurship >= 1)*2
+    return score
+           
+    
 
 def preferencelists(menteeList, mentorList):
     for menteeid in menteeList:
@@ -171,6 +293,19 @@ def maxscore(matchscores):
             bestpairing = person
     return bestpairing
 
+def same_numbers(menteePrefs, mentorPrefs):
+    num_mentees = len(menteePrefs)
+    num_mentors = len(mentorPrefs)
+    while num_mentees < num_mentors:
+        for mentor in list(mentorPrefs.keys()):
+            mentorPrefs[mentor] += [num_mentees+1]
+            menteePrefs[num_mentees+1] = [x*-1 for x in list(range(1,num_mentors+1))]
+        num_mentees += 1
+    while num_mentees > num_mentors:
+        for mentee in list(menteePrefs.keys()):
+            menteePrefs[mentee] += [(num_mentors+1)*-1]
+            mentorPrefs[(num_mentors+1)*-1] = list(range(1,num_mentees+1))
+        num_mentors += 1
 
 def stableMarriage(mentees, mentors):
     
@@ -183,29 +318,37 @@ def stableMarriage(mentees, mentors):
     mentorPrefs = {}
     for mentor_id in mentorList:
         mentorPrefs[mentor_id] = mentorList[mentor_id].preferences
+        
+    same_numbers(menteePrefs, mentorPrefs)
+   
     
-    #Example of Mentee Prefs: {3: [-3,-4,-5,...], 2: [-1,-2,-3...]}
+    #Now menteePrefs + mentorPrefs have same # of matches. 
+    #menteePrefs: {1: [-2,-3,..], 2:[-3,-4,...], ...}
+    #mentorPrefs: {-1: [5, 3,..], -2:[4,2,...], ...}
+    #proposals: {-1:2, -3:5, -7:4, ...}
     
     proposals = {}
+    final_len = len(mentorPrefs)
     
-    while len(proposals) != len(mentorPrefs):
+    while len(proposals) != final_len:
         for mentor_id in mentorPrefs:
-            
             prefs = mentorPrefs.get(mentor_id)
-            bestChoice = prefs[0]
-            
-            if bestChoice in proposals.values():
-                
-                otherMentor = None
-                for key in menteePrefs[bestChoice]:
-                    if key in proposals.keys() and proposals[key] == bestChoice:
-                        otherMentor = key
-                if menteePrefs[bestChoice].index(mentor_id) > menteePrefs[bestChoice].index(otherMentor):
-                    proposals[mentor_id] = bestChoice
-                    del proposals[otherMentor]
-                    mentorPrefs[otherMentor].remove(bestChoice)
+            if mentor_id not in proposals and len(prefs) > 0:
+                bestChoice = prefs[0]
+                if bestChoice in proposals.values():
+                    otherMentor = None
+                    for key in menteePrefs[bestChoice]:
+                        if key in proposals.keys() and proposals[key] == bestChoice:
+                            otherMentor = key
+                    menteePref1 = menteePrefs[bestChoice].index(mentor_id)
+                    menteePref2 = menteePrefs[bestChoice].index(otherMentor)
+                    if menteePref1 < menteePref2:
+                        proposals[mentor_id] = bestChoice
+                        del proposals[otherMentor]
+                        mentorPrefs[otherMentor].remove(bestChoice)
+                    else:
+                        mentorPrefs[mentor_id].remove(bestChoice)
                 else:
-                    mentorPrefs[mentor_id].remove(bestChoice)
-            else:
-                proposals[mentor_id] = bestChoice
+                    proposals[mentor_id] = bestChoice
+                    
     return proposals
