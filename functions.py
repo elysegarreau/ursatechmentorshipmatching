@@ -25,7 +25,7 @@ def matchScore(menteeList, mentorList):
             score += hobbyMatches / 17 * 5
 
             #chunk 2: timezone (max 20)
-            score += 25 * (1 / 2 ** abs((mentee.utc - mentor.utc)))
+            score += 25 * ((1 / 2) ** abs((mentee.utc - mentor.utc)))
 
             #chunk 3: occupation/major (max 25)
             if mentee.major == mentor.major:
@@ -37,14 +37,17 @@ def matchScore(menteeList, mentorList):
             elif mentee.second_major == mentor.second_major:
                 score += 15
             
-            if mentee.job == mentor.job:
-                score += 10
+            for job in mentee.job:
+                if job == mentor.job:
+                    score += 10
+                elif job == mentor.unlisted_profession:
+                    score += 10
 
             #chunk 4: personality (max 10)
             if mentee.ie_pairing == 'Extraverted':
-                score += 2 * mentor.ie
+                score += 2 * (mentor.ie > 3)
             elif mentee.ie_pairing == 'Introverted':
-                score -= 2 * mentor.ie
+                score += 2 * (mentor.ie < 3)
 
             #chunk 5: time (max 25)
             if mentee.meet == mentor.meet:
@@ -93,7 +96,7 @@ def matchScore(menteeList, mentorList):
             score += hobbyMatches / 17 * 5
 
             #chunk 2: location (max 20)
-            score += 25 * (1 / 2 ** abs((mentee.utc - mentor.utc)))
+            score += 25 * ((1 / 2) ** abs((mentee.utc - mentor.utc)))
             
             #chunk 3: occupation/major (max 25)
             if mentee.major == mentor.major:
@@ -104,6 +107,12 @@ def matchScore(menteeList, mentorList):
                 score += 15
             elif mentee.second_major == mentor.second_major:
                 score += 15
+            
+            for job in mentee.job:
+                if job == mentor.job:
+                    score += 10
+                elif job == mentor.unlisted_profession:
+                    score += 10
     
             if mentee.job == mentor.job:
                 score += 10
@@ -147,7 +156,7 @@ def mentee_skills(mentee, mentor):
     if "DeFi" in mentee.skills:
         score += mentor.defi
     if "Cryptography" in mentee.skills:
-        score += mentor.cryptography
+        score += mentor.crypto
     if "Governance" in mentee.skills:
         score += mentor.governance
     if "Privacy" in mentee.skills:
@@ -187,8 +196,8 @@ def mentor_skills(mentee, mentor):
             score += (mentee.ethereum >= 3)*4
         if mentor.defi >= 3:
             score += (mentee.defi >= 3)*4
-        if mentor.cryptography >= 3:
-            score += (mentee.cryptography >= 3)*4
+        if mentor.crypto >= 3:
+            score += (mentee.crypto >= 3)*4
         if mentor.governance >= 3:
             score += (mentee.governance >= 3)*4
         if mentor.privacy >= 3:
@@ -225,8 +234,8 @@ def mentor_skills(mentee, mentor):
              score += (mentee.ethereum >= 1)*2
         if mentor.defi >= 3:
              score += (mentee.defi >= 1)*2
-        if mentor.cryptography >= 3:
-             score += (mentee.cryptography >= 1)*2
+        if mentor.crypto >= 3:
+             score += (mentee.crypto >= 1)*2
         if mentor.governance >= 3:
              score += (mentee.governance >= 1)*2
         if mentor.privacy >= 3:

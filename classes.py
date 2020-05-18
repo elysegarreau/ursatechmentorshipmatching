@@ -120,7 +120,7 @@ def output_mentees(mentee_df):
         email = current.loc["email"]
         major = current.loc["major"]
         second_major = current.loc["second_major"]
-        job = current.loc["job"]
+        job = current.loc["job"].split(',')
         prof_interests = current.loc["prof_interests"].split(',')
         hobbies = current.loc["hobbies"].split(',')
         meet = current.loc["meet"]
@@ -159,7 +159,7 @@ def output_mentees(mentee_df):
 
 class Mentor:
     
-    def __init__(self, first, last, phone, email, major, second_major, job, prof_interests, hobbies, meet, utc, mbti, ie, ie_pairing, bitcoin, ethereum, defi, crypto, governance, privacy, usability, scalability, research, design, development, product, investment, community, trading, legal, marketing, entrepreneurship, skills, goals, why_blockchain, blockchain_importance):
+    def __init__(self, first, last, phone, email, major, second_major, job, prof_interests, hobbies, meet, utc, mbti, ie, ie_pairing, bitcoin, ethereum, defi, crypto, governance, privacy, usability, scalability, research, design, development, product, investment, community, trading, legal, marketing, entrepreneurship, skills, goals, why_blockchain, blockchain_importance, unlisted_profession):
         self.first = first
         self.last = last
         self.phone = phone
@@ -196,12 +196,12 @@ class Mentor:
         self.goals = goals
         self.why_blockchain = why_blockchain
         self.blockchain_importance = blockchain_importance
+        self.unlisted_profession = unlisted_profession
         self.scores = {}
         self.preferences = []
-        
 
 #Columns of Mentor DataFrame
-mentor_columns = ["first", "last", "phone", "email", "major","second_major", "job", "prof_interests", "hobbies", "meet","utc","mbti", "ie", "ie_pairing", "bitcoin", "ethereum", "defi", "crypto", "governance", "privacy", "usability", "scalability", "research", "design", "development", "product", "investment", "community", "trading", "legal", "marketing", "entrepreneurship", "skills", "goals", "why_blockchain", "blockchain_importance"]
+mentor_columns = ["first", "last", "phone", "email", "major","second_major", "job", "prof_interests", "hobbies", "meet","utc","mbti", "ie", "ie_pairing", "bitcoin", "ethereum", "defi", "crypto", "governance", "privacy", "usability", "scalability", "research", "design", "development", "product", "investment", "community", "trading", "legal", "marketing", "entrepreneurship", "skills", "goals", "why_blockchain", "blockchain_importance", "unlisted_profession"]
 
 timezones = {"GMT (Greenwich Mean Time)":0,
              "ECT (European Central Time)":1, 
@@ -278,10 +278,11 @@ def output_mentors(mentor_df):
         entrepreneurship = current.loc["entrepreneurship"]
         skills = current.loc["skills"].split(',')
         goals = current.loc["goals"]
+        unlisted_profession = current.loc["unlisted_profession"]
         why_blockchain = current.loc["why_blockchain"]
         blockchain_importance = current.loc["blockchain_importance"]
 
-        mentorsList[-1*(row+1)] = Mentor(first, last, phone, email, major, second_major, job, prof_interests, hobbies, meet, utc, mbti, ie, ie_pairing, bitcoin, ethereum, defi, crypto, governance, privacy, usability, scalability, research, design, development, product, investment, community, trading, legal, marketing, entrepreneurship, skills, goals, why_blockchain, blockchain_importance)
+        mentorsList[-1*(row+1)] = Mentor(first, last, phone, email, major, second_major, job, prof_interests, hobbies, meet, utc, mbti, ie, ie_pairing, bitcoin, ethereum, defi, crypto, governance, privacy, usability, scalability, research, design, development, product, investment, community, trading, legal, marketing, entrepreneurship, skills, goals, unlisted_profession, why_blockchain, blockchain_importance)
     return mentorsList
 
 def output_final(proposals, mentors, mentees):
