@@ -348,7 +348,7 @@ def output_final(proposals, mentors, mentees):
     final = pd.DataFrame(rowslist)
     display(final)
 
-def matchScore(menteeList, mentorList):
+def matchscore(menteeList, mentorList):
     
     #Mentee's score of Mentor
     
@@ -615,7 +615,7 @@ def mentor_skills(mentee, mentor):
            
     
 
-def preferencelists(menteeList, mentorList):
+def preferencelist(menteeList, mentorList):
     for menteeid in menteeList:
         mentee = menteeList.get(menteeid)
         copy = mentee.scores.copy()
@@ -637,8 +637,8 @@ def preferencelists(menteeList, mentorList):
     return
 
 
-#Input: {1: 44, 2: 3.2, 6: 33.2}
-#Output: 1
+#Example input: {1: 44, 2: 3.2, 6: 33.2}
+#Example output: 1
 def maxscore(matchscores):
     bestscore = -1
     bestpairing = None
@@ -663,7 +663,7 @@ def same_numbers(menteePrefs, mentorPrefs):
             mentorPrefs[(num_mentors+1)*-1] = list(range(1,num_mentees+1))
         num_mentors += 1
 
-def stableMarriage(mentees, mentors):
+def stablemarriage(mentees, mentors):
     
     menteeList = copy.deepcopy(mentees)
     mentorList = copy.deepcopy(mentors)
